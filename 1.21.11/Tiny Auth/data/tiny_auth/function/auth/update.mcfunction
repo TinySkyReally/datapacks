@@ -1,0 +1,1 @@
+$execute if score @s tinyauth.auth.state matches 3 if predicate {condition:"minecraft:entity_properties",entity:"this",predicate:{periodic_tick:20}} run function tiny_auth:auth/init {UUID:$(UUID),message:-1,submit:-1,state:3}

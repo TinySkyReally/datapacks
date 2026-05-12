@@ -1,0 +1,15 @@
+{
+  "ambient_light": 0,
+  "coordinate_scale": 1,
+  "has_ceiling": false,
+  "has_fixed_time": false,
+  "has_skylight": false,
+  "height": 16,
+  "infiniburn": "#minecraft:anvil",
+  "logical_height": 16,
+  "min_y": 0,
+  "monster_spawn_block_light_limit": 0,
+  "monster_spawn_light_level": 15,
+  "skybox": "none",
+  "timelines": "#minecraft:in_end"
+}

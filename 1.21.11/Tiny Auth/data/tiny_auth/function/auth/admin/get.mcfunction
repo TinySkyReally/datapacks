@@ -1,0 +1,1 @@
+$data modify storage tiny_auth:temp get set from storage tiny_auth:keys auths[{Name:"$(Name)"}].password

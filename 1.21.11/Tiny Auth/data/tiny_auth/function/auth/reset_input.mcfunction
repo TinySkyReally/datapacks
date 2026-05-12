@@ -1,0 +1,1 @@
+$data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].input set value ""

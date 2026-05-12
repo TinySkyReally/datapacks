@@ -1,0 +1,11 @@
+{
+  "type": "tiny_auth:authdim",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "lakes": false,
+      "features": false,
+      "layers": []
+    }
+  }
+}

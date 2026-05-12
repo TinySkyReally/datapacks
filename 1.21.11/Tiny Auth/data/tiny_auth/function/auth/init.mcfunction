@@ -1,0 +1,118 @@
+scoreboard players enable @s tinyauth.auth.enter.1
+scoreboard players enable @s tinyauth.auth.enter.2
+scoreboard players enable @s tinyauth.auth.enter.3
+scoreboard players enable @s tinyauth.auth.enter.4
+scoreboard players enable @s tinyauth.auth.enter.5
+scoreboard players enable @s tinyauth.auth.enter.6
+scoreboard players enable @s tinyauth.auth.enter.7
+scoreboard players enable @s tinyauth.auth.enter.8
+scoreboard players enable @s tinyauth.auth.enter.9
+scoreboard players enable @s tinyauth.auth.enter.0
+scoreboard players enable @s tinyauth.auth.enter.q
+scoreboard players enable @s tinyauth.auth.enter.w
+scoreboard players enable @s tinyauth.auth.enter.e
+scoreboard players enable @s tinyauth.auth.enter.r
+scoreboard players enable @s tinyauth.auth.enter.t
+scoreboard players enable @s tinyauth.auth.enter.y
+scoreboard players enable @s tinyauth.auth.enter.u
+scoreboard players enable @s tinyauth.auth.enter.i
+scoreboard players enable @s tinyauth.auth.enter.o
+scoreboard players enable @s tinyauth.auth.enter.p
+scoreboard players enable @s tinyauth.auth.enter.a
+scoreboard players enable @s tinyauth.auth.enter.s
+scoreboard players enable @s tinyauth.auth.enter.d
+scoreboard players enable @s tinyauth.auth.enter.f
+scoreboard players enable @s tinyauth.auth.enter.g
+scoreboard players enable @s tinyauth.auth.enter.h
+scoreboard players enable @s tinyauth.auth.enter.j
+scoreboard players enable @s tinyauth.auth.enter.k
+scoreboard players enable @s tinyauth.auth.enter.l
+scoreboard players enable @s tinyauth.auth.enter.z
+scoreboard players enable @s tinyauth.auth.enter.x
+scoreboard players enable @s tinyauth.auth.enter.c
+scoreboard players enable @s tinyauth.auth.enter.v
+scoreboard players enable @s tinyauth.auth.enter.b
+scoreboard players enable @s tinyauth.auth.enter.n
+scoreboard players enable @s tinyauth.auth.enter.m
+
+scoreboard players enable @s tinyauth.auth.submit
+scoreboard players enable @s tinyauth.auth.clear
+scoreboard players enable @s tinyauth.auth.change_theme
+scoreboard players enable @s tinyauth.auth.change_language
+
+scoreboard players enable @s tinyauth.auth.theme.title
+scoreboard players enable @s tinyauth.auth.theme.input_title
+scoreboard players enable @s tinyauth.auth.theme.input
+scoreboard players enable @s tinyauth.auth.theme.default_key
+scoreboard players enable @s tinyauth.auth.theme.submit
+
+$execute unless dimension tiny_auth:authdim run data remove storage tiny_auth:keys auths[{UUID:$(UUID)}].active_effects
+$execute unless dimension tiny_auth:authdim run data remove storage tiny_auth:keys auths[{UUID:$(UUID)}].attributes
+$execute unless dimension tiny_auth:authdim run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].active_effects set from entity @s active_effects
+$execute unless dimension tiny_auth:authdim run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].attributes set from entity @s attributes
+
+attribute @s minecraft:block_break_speed base set 0
+attribute @s minecraft:attack_damage base set 0
+attribute @s minecraft:movement_speed base set 0
+attribute @s minecraft:jump_strength base set 0
+attribute @s minecraft:block_interaction_range base set 0
+attribute @s minecraft:entity_interaction_range base set 0
+
+effect give @s minecraft:blindness infinite 255 true
+effect give @s minecraft:resistance infinite 255 true
+effect give @s minecraft:invisibility infinite 255 true
+
+$execute unless dimension tiny_auth:authdim run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].x set from entity @s Pos[0]
+$execute unless dimension tiny_auth:authdim run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].y set from entity @s Pos[1]
+$execute unless dimension tiny_auth:authdim run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].z set from entity @s Pos[2]
+$execute unless dimension tiny_auth:authdim run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].dimension set from entity @s Dimension
+$execute unless dimension tiny_auth:authdim run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].gamemode set value "survival"
+$execute unless dimension tiny_auth:authdim if entity @s[gamemode=creative] run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].gamemode set value "creative"
+$execute unless dimension tiny_auth:authdim if entity @s[gamemode=adventure] run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].gamemode set value "adventure"
+$execute unless dimension tiny_auth:authdim if entity @s[gamemode=spectator] run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].gamemode set value "spectator"
+$execute unless dimension tiny_auth:authdim if entity @s[gamemode=survival] run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].gamemode set value "survival"
+
+execute in tiny_auth:authdim run tp @s 1000 7 0
+gamemode adventure
+
+$scoreboard players set @s tinyauth.auth.state $(state)
+
+$execute store result score @s tinyauth.auth.temp run data get storage tiny_auth:keys auths[{UUID:$(UUID)}].attempts
+$execute if score @s tinyauth.auth.temp matches ..0 run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].attempts set from storage tiny_auth:config max_attempts
+execute if score @s tinyauth.auth.temp matches ..0 run scoreboard players set @s tinyauth.auth.state 3
+execute if score @s tinyauth.auth.temp matches ..0 store result score #gametime tinyauth.auth.temp run time query gametime
+execute if score @s tinyauth.auth.temp matches ..0 store result score #lockout_duration tinyauth.auth.temp run data get storage tiny_auth:config lockout_duration
+$execute if score @s tinyauth.auth.temp matches ..0 store result storage tiny_auth:keys auths[{UUID:$(UUID)}].time int 1 run scoreboard players operation #gametime tinyauth.auth.temp += #lockout_duration tinyauth.auth.temp
+
+$data modify storage tiny_auth:temp show_dialog set from storage tiny_auth:keys auths[{UUID:$(UUID)}]
+
+$execute unless score @s tinyauth.auth.temp matches ..0 run data modify storage tiny_auth:temp setMessage.message set value "$(message)"
+execute if score @s tinyauth.auth.temp matches ..0 run data modify storage tiny_auth:temp setMessage.message set value "blocked"
+execute store result storage tiny_auth:temp setMessage.language int 1 run scoreboard players get @s tinyauth.auth.language_id
+
+$execute if data storage tiny_auth:temp {setMessage:{message:"-1"}} run data modify storage tiny_auth:temp setMessage.message set from storage tiny_auth:keys auths[{UUID:$(UUID)}].prevmessage
+execute if data storage tiny_auth:temp {setMessage:{message:""}} run data modify storage tiny_auth:temp setMessage.message set value "none"
+
+$data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].prevmessage set from storage tiny_auth:temp setMessage.message
+
+data modify storage tiny_auth:temp show_dialog.message set value {"text":""}
+function tiny_auth:auth/init/set_message with storage tiny_auth:temp setMessage
+
+$data modify storage tiny_auth:temp show_dialog.submit set value "$(submit)"
+execute if data storage tiny_auth:temp {show_dialog:{password:""}} if data storage tiny_auth:temp {show_dialog:{submit:""}} run data modify storage tiny_auth:temp show_dialog.submit set value "Register"
+execute unless data storage tiny_auth:temp {show_dialog:{password:""}} if data storage tiny_auth:temp {show_dialog:{submit:""}} run data modify storage tiny_auth:temp show_dialog.submit set value "Log In"
+
+$execute if data storage tiny_auth:temp {show_dialog:{submit:"-1"}} run data modify storage tiny_auth:temp show_dialog.submit set from storage tiny_auth:keys auths[{UUID:$(UUID)}].prevsubmit
+
+$data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].prevsubmit set from storage tiny_auth:temp show_dialog.submit
+
+data modify storage tiny_auth:temp themeSetup.UUID set from entity @s UUID
+execute store result storage tiny_auth:temp themeSetup.theme_id int 1 run scoreboard players get @s tinyauth.auth.theme_id
+execute if score @s tinyauth.auth.state matches 4 run data modify storage tiny_auth:temp themeSetup.theme_id set value -1
+
+function tiny_auth:auth/theme/setup with storage tiny_auth:temp themeSetup
+
+execute if score @s tinyauth.auth.state matches 4 run data modify storage tiny_auth:temp show_dialog.message set value [{text:"Title\n",click_event:{action:"run_command",command:"trigger tinyauth.auth.theme.title"}},{text:"Input Title\n",click_event:{action:"run_command",command:"trigger tinyauth.auth.theme.input_title"}},{text:"Input\n",click_event:{action:"run_command",command:"trigger tinyauth.auth.theme.input"}},{text:"Default Key\n",click_event:{action:"run_command",command:"trigger tinyauth.auth.theme.default_key"}},{text:"Submit",click_event:{action:"run_command",command:"trigger tinyauth.auth.theme.submit"}}]
+execute if score @s tinyauth.auth.state matches 4 run data modify storage tiny_auth:temp show_dialog.input set value "PASSWORD"
+
+function tiny_auth:auth/show_dialog with storage tiny_auth:temp show_dialog

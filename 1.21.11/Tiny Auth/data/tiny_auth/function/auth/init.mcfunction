@@ -37,6 +37,7 @@ scoreboard players enable @s tinyauth.auth.enter.m
 
 scoreboard players enable @s tinyauth.auth.submit
 scoreboard players enable @s tinyauth.auth.clear
+scoreboard players enable @s tinyauth.auth.login_with_otp
 scoreboard players enable @s tinyauth.auth.change_theme
 scoreboard players enable @s tinyauth.auth.change_language
 
@@ -77,17 +78,29 @@ gamemode adventure
 
 $scoreboard players set @s tinyauth.auth.state $(state)
 
+$execute unless data storage tiny_auth:keys auths[{UUID:$(UUID)}].lock_attempts run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].lock_attempts set from storage tiny_auth:config lock_attempts
+$execute unless data storage tiny_auth:keys auths[{UUID:$(UUID)}].lock_attempts run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].lock_attempts set value 5
+
+$execute store result score #lockAttempts tinyauth.auth.temp run data get storage tiny_auth:keys auths[{UUID:$(UUID)}].lock_attempts
+
+$execute unless data storage tiny_auth:keys auths[{UUID:$(UUID)}].lock_attempts run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].lock_attempts set from storage tiny_auth:config max_attempts
+$execute unless data storage tiny_auth:keys auths[{UUID:$(UUID)}].lock_attempts run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].lock_attempts set value 3
+
 $execute store result score @s tinyauth.auth.temp run data get storage tiny_auth:keys auths[{UUID:$(UUID)}].attempts
+
 $execute if score @s tinyauth.auth.temp matches ..0 run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].attempts set from storage tiny_auth:config max_attempts
 execute if score @s tinyauth.auth.temp matches ..0 run scoreboard players set @s tinyauth.auth.state 3
 execute if score @s tinyauth.auth.temp matches ..0 store result score #gametime tinyauth.auth.temp run time query gametime
 execute if score @s tinyauth.auth.temp matches ..0 store result score #lockout_duration tinyauth.auth.temp run data get storage tiny_auth:config lockout_duration
 $execute if score @s tinyauth.auth.temp matches ..0 store result storage tiny_auth:keys auths[{UUID:$(UUID)}].time int 1 run scoreboard players operation #gametime tinyauth.auth.temp += #lockout_duration tinyauth.auth.temp
+execute if score @s tinyauth.auth.temp matches ..0 run scoreboard players remove #lockAttempts tinyauth.auth.temp 1
+$execute if score @s tinyauth.auth.temp matches ..0 store result storage tiny_auth:keys auths[{UUID:$(UUID)}].lock_attempts int 1 run scoreboard players get #lockAttempts tinyauth.auth.temp
 
 $data modify storage tiny_auth:temp show_dialog set from storage tiny_auth:keys auths[{UUID:$(UUID)}]
 
 $execute unless score @s tinyauth.auth.temp matches ..0 run data modify storage tiny_auth:temp setMessage.message set value "$(message)"
 execute if score @s tinyauth.auth.temp matches ..0 run data modify storage tiny_auth:temp setMessage.message set value "blocked"
+execute if score #lockAttempts tinyauth.auth.temp matches ..0 run data modify storage tiny_auth:temp setMessage.message set value "enter_otp"
 execute store result storage tiny_auth:temp setMessage.language int 1 run scoreboard players get @s tinyauth.auth.language_id
 
 $execute if data storage tiny_auth:temp {setMessage:{message:"-1"}} run data modify storage tiny_auth:temp setMessage.message set from storage tiny_auth:keys auths[{UUID:$(UUID)}].prevmessage
@@ -101,6 +114,9 @@ function tiny_auth:auth/init/set_message with storage tiny_auth:temp setMessage
 $data modify storage tiny_auth:temp show_dialog.submit set value "$(submit)"
 execute if data storage tiny_auth:temp {show_dialog:{password:""}} if data storage tiny_auth:temp {show_dialog:{submit:""}} run data modify storage tiny_auth:temp show_dialog.submit set value "Register"
 execute unless data storage tiny_auth:temp {show_dialog:{password:""}} if data storage tiny_auth:temp {show_dialog:{submit:""}} run data modify storage tiny_auth:temp show_dialog.submit set value "Log In"
+
+execute unless score @s tinyauth.auth.state matches 6 run data modify storage tiny_auth:temp show_dialog.login_with_otp set value "Login With OTP"
+execute if score @s tinyauth.auth.state matches 6 run data modify storage tiny_auth:temp show_dialog.login_with_otp set value "Login With Password"
 
 $execute if data storage tiny_auth:temp {show_dialog:{submit:"-1"}} run data modify storage tiny_auth:temp show_dialog.submit set from storage tiny_auth:keys auths[{UUID:$(UUID)}].prevsubmit
 

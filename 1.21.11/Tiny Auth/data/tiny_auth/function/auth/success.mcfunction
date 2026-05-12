@@ -1,3 +1,5 @@
+dialog clear @s
+
 $execute in $(dimension) run tp $(x) $(y) $(z)
 $gamemode $(gamemode)
 scoreboard players set @s tinyauth.auth.state 0

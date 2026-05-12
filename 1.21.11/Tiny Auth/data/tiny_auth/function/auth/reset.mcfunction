@@ -37,6 +37,7 @@ scoreboard players reset @s tinyauth.auth.enter.m
 
 scoreboard players reset @s tinyauth.auth.submit
 scoreboard players reset @s tinyauth.auth.clear
+scoreboard players reset @s tinyauth.auth.login_with_otp
 scoreboard players reset @s tinyauth.auth.change_theme
 scoreboard players reset @s tinyauth.auth.change_language
 

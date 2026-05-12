@@ -1,0 +1,1 @@
+return run function tiny_auth:auth/check/otp_test/macro with entity @s

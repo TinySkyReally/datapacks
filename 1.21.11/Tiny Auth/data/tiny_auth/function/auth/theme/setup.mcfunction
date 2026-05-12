@@ -44,6 +44,7 @@ $function tiny_auth:auth/theme/set {key:"key_input",theme_id:$(theme_id)}
 $function tiny_auth:auth/theme/set {key:"key_input_title",theme_id:$(theme_id)}
 $function tiny_auth:auth/theme/set {key:"key_submit",theme_id:$(theme_id)}
 $function tiny_auth:auth/theme/set {key:"key_clear",theme_id:$(theme_id)}
+$function tiny_auth:auth/theme/set {key:"key_login_with_otp",theme_id:$(theme_id)}
 $function tiny_auth:auth/theme/set {key:"key_theme",theme_id:$(theme_id)}
 $function tiny_auth:auth/theme/set {key:"key_language",theme_id:$(theme_id)}
 $function tiny_auth:auth/theme/set {key:"key_title",theme_id:$(theme_id)}

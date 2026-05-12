@@ -1,5 +1,6 @@
 execute if score @s tinyauth.auth.submit matches 1.. run function tiny_auth:auth/check with entity @s
 execute if score @s tinyauth.auth.clear matches 1.. run function tiny_auth:auth/clear with entity @s
+execute if score @s tinyauth.auth.login_with_otp matches 1.. run function tiny_auth:auth/login_with_otp with entity @s
 execute if score @s tinyauth.auth.change_theme matches 1.. run function tiny_auth:auth/change_theme with entity @s
 execute if score @s tinyauth.auth.change_language matches 1.. run function tiny_auth:auth/change_language with entity @s
 

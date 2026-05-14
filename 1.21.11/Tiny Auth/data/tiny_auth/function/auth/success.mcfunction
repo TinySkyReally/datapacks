@@ -1,32 +1,26 @@
 dialog clear @s
 
-$execute in $(dimension) run tp $(x) $(y) $(z)
-$gamemode $(gamemode)
+execute unless data storage tiny_auth:temp auth.dimension run data modify storage tiny_auth:temp auth.dimension set from storage tiny_auth:config default_dimension
+execute unless data storage tiny_auth:temp auth.dimension run data modify storage tiny_auth:temp auth.dimension set value "minecraft:overworld"
+execute unless data storage tiny_auth:temp auth.x run data modify storage tiny_auth:temp auth.x set from storage tiny_auth:config default_x
+execute unless data storage tiny_auth:temp auth.x run data modify storage tiny_auth:temp auth.x set value 0
+execute unless data storage tiny_auth:temp auth.y run data modify storage tiny_auth:temp auth.y set from storage tiny_auth:config default_y
+execute unless data storage tiny_auth:temp auth.y run data modify storage tiny_auth:temp auth.y set value 0
+execute unless data storage tiny_auth:temp auth.z run data modify storage tiny_auth:temp auth.z set from storage tiny_auth:config default_z
+execute unless data storage tiny_auth:temp auth.z run data modify storage tiny_auth:temp auth.z set value 0
+execute unless data storage tiny_auth:temp auth.yaw run data modify storage tiny_auth:temp auth.yaw set from storage tiny_auth:config default_yaw
+execute unless data storage tiny_auth:temp auth.yaw run data modify storage tiny_auth:temp auth.yaw set value 0
+execute unless data storage tiny_auth:temp auth.pitch run data modify storage tiny_auth:temp auth.pitch set from storage tiny_auth:config default_pitch
+execute unless data storage tiny_auth:temp auth.pitch run data modify storage tiny_auth:temp auth.pitch set value 0
+execute unless data storage tiny_auth:temp auth.gamemode run data modify storage tiny_auth:temp auth.gamemode set from storage tiny_auth:config default_gamemode
+execute unless data storage tiny_auth:temp auth.gamemode run data modify storage tiny_auth:temp auth.gamemode set value "survival"
+execute unless data storage tiny_auth:temp auth.UUID run data modify storage tiny_auth:temp auth.UUID set from entity @s UUID
+
+function tiny_auth:auth/success/macro with storage tiny_auth:temp auth
+
 scoreboard players set @s tinyauth.auth.state 0
 scoreboard players enable @s tinyauth.auth.change_password
 scoreboard players enable @s tinyauth.auth.logout
 scoreboard players enable @s tinyauth.auth.create_personal_theme
-
-attribute @s minecraft:block_break_speed base reset
-attribute @s minecraft:attack_damage base reset
-attribute @s minecraft:movement_speed base reset
-attribute @s minecraft:jump_strength base reset
-attribute @s minecraft:block_interaction_range base reset
-attribute @s minecraft:entity_interaction_range base reset
-
-$function tiny_auth:auth/attributes/return with storage tiny_auth:keys auths[{UUID:$(UUID)}].attributes[{id:"minecraft:block_break_speed"}]
-$function tiny_auth:auth/attributes/return with storage tiny_auth:keys auths[{UUID:$(UUID)}].attributes[{id:"minecraft:attack_damage"}]
-$function tiny_auth:auth/attributes/return with storage tiny_auth:keys auths[{UUID:$(UUID)}].attributes[{id:"minecraft:movement_speed"}]
-$function tiny_auth:auth/attributes/return with storage tiny_auth:keys auths[{UUID:$(UUID)}].attributes[{id:"minecraft:jump_strength"}]
-$function tiny_auth:auth/attributes/return with storage tiny_auth:keys auths[{UUID:$(UUID)}].attributes[{id:"minecraft:block_interaction_range"}]
-$function tiny_auth:auth/attributes/return with storage tiny_auth:keys auths[{UUID:$(UUID)}].attributes[{id:"minecraft:entity_interaction_range"}]
-
-effect clear @s minecraft:blindness
-effect clear @s minecraft:resistance
-effect clear @s minecraft:invisibility
-
-$function tiny_auth:auth/effects/return with storage tiny_auth:keys auths[{UUID:$(UUID)}].active_effects[{id:"minecraft:blindness"}]
-$function tiny_auth:auth/effects/return with storage tiny_auth:keys auths[{UUID:$(UUID)}].active_effects[{id:"minecraft:resistance"}]
-$function tiny_auth:auth/effects/return with storage tiny_auth:keys auths[{UUID:$(UUID)}].active_effects[{id:"minecraft:invisibility"}]
 
 playsound minecraft:entity.player.levelup ui @s ~ ~ ~ 100 2

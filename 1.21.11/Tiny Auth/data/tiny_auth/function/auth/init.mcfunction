@@ -66,6 +66,8 @@ effect give @s minecraft:invisibility infinite 255 true
 $execute unless dimension tiny_auth:authdim run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].x set from entity @s Pos[0]
 $execute unless dimension tiny_auth:authdim run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].y set from entity @s Pos[1]
 $execute unless dimension tiny_auth:authdim run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].z set from entity @s Pos[2]
+$execute unless dimension tiny_auth:authdim run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].yaw set from entity @s Rotation[0]
+$execute unless dimension tiny_auth:authdim run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].pitch set from entity @s Rotation[1]
 $execute unless dimension tiny_auth:authdim run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].dimension set from entity @s Dimension
 $execute unless dimension tiny_auth:authdim run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].gamemode set value "survival"
 $execute unless dimension tiny_auth:authdim if entity @s[gamemode=creative] run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].gamemode set value "creative"
@@ -73,8 +75,16 @@ $execute unless dimension tiny_auth:authdim if entity @s[gamemode=adventure] run
 $execute unless dimension tiny_auth:authdim if entity @s[gamemode=spectator] run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].gamemode set value "spectator"
 $execute unless dimension tiny_auth:authdim if entity @s[gamemode=survival] run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].gamemode set value "survival"
 
-execute in tiny_auth:authdim run tp @s 1000 7 0
+execute in tiny_auth:authdim run tp @s 1000 7 0 -90 -90
 gamemode adventure
+
+#$execute unless data storage tiny_auth:keys auths[{UUID:$(UUID)}].x run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].x set value 0
+#$execute unless data storage tiny_auth:keys auths[{UUID:$(UUID)}].y run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].y set value 0
+#$execute unless data storage tiny_auth:keys auths[{UUID:$(UUID)}].z run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].z set value 0
+#$execute unless data storage tiny_auth:keys auths[{UUID:$(UUID)}].dimension run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].dimension set value "minecraft:overworld"
+#$execute unless data storage tiny_auth:keys auths[{UUID:$(UUID)}].gamemode run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].gamemode set value "survival"
+#$execute unless data storage tiny_auth:keys auths[{UUID:$(UUID)}].active_effects run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].active_effects set value []
+#$execute unless data storage tiny_auth:keys auths[{UUID:$(UUID)}].attributes run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].attributes set value []
 
 $scoreboard players set @s tinyauth.auth.state $(state)
 
@@ -83,8 +93,8 @@ $execute unless data storage tiny_auth:keys auths[{UUID:$(UUID)}].lock_attempts 
 
 $execute store result score #lockAttempts tinyauth.auth.temp run data get storage tiny_auth:keys auths[{UUID:$(UUID)}].lock_attempts
 
-$execute unless data storage tiny_auth:keys auths[{UUID:$(UUID)}].lock_attempts run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].lock_attempts set from storage tiny_auth:config max_attempts
-$execute unless data storage tiny_auth:keys auths[{UUID:$(UUID)}].lock_attempts run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].lock_attempts set value 3
+$execute unless data storage tiny_auth:keys auths[{UUID:$(UUID)}].attempts run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].attempts set from storage tiny_auth:config max_attempts
+$execute unless data storage tiny_auth:keys auths[{UUID:$(UUID)}].attempts run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].attempts set value 3
 
 $execute store result score @s tinyauth.auth.temp run data get storage tiny_auth:keys auths[{UUID:$(UUID)}].attempts
 

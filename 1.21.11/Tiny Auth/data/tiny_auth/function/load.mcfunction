@@ -52,6 +52,7 @@ scoreboard objectives add tinyauth.auth.logout trigger
 scoreboard objectives add tinyauth.auth.create_personal_theme trigger
 
 scoreboard objectives add tinyauth.auth.state dummy
+scoreboard objectives add tinyauth.auth.page dummy
 scoreboard objectives add tinyauth.auth.temp dummy
 scoreboard objectives add tinyauth.auth.theme_id dummy
 scoreboard objectives add tinyauth.auth.language_id dummy

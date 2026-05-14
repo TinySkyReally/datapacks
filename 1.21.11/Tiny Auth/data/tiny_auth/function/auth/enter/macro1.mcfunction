@@ -11,8 +11,10 @@ $execute unless score #input tinyauth.auth.temp > #max_password_length tinyauth.
 execute unless score #input tinyauth.auth.temp > #max_password_length tinyauth.auth.temp run playsound minecraft:block.note_block.iron_xylophone ui @s ~ ~ ~ 100 2
 execute if score #input tinyauth.auth.temp > #max_password_length tinyauth.auth.temp run playsound minecraft:block.iron_trapdoor.open ui @s ~ ~ ~ 100 2
 
-$data modify storage tiny_auth:temp initEnter set value {UUID:$(UUID),message:-1,submit:-1,state:1}
+$data modify storage tiny_auth:temp initEnter set value {UUID:$(UUID),message:-1,submit:-1,state:1,page:-1}
 execute store result storage tiny_auth:temp initEnter.state int 1 run scoreboard players get @s tinyauth.auth.state
+
+execute if score @s tinyauth.auth.state matches 7 run return run function tiny_auth:auth/admin/control_gui/init with storage tiny_auth:temp initEnter
 
 execute if score @s tinyauth.auth.state matches 5 run return run function tiny_auth:auth/create_personal_theme/init with entity @s
 

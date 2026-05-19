@@ -14,6 +14,11 @@ execute if score #input tinyauth.auth.temp > #max_password_length tinyauth.auth.
 $data modify storage tiny_auth:temp initEnter set value {UUID:$(UUID),message:-1,submit:-1,state:1,page:-1}
 execute store result storage tiny_auth:temp initEnter.state int 1 run scoreboard players get @s tinyauth.auth.state
 
+execute if score @s tinyauth.auth.state matches 7 if score @s tinyauth.auth.page matches 4..5 run scoreboard players set #testnumber tinyauth.auth.temp 0
+$execute if score @s tinyauth.auth.state matches 7 if score @s tinyauth.auth.page matches 4..5 store result score #testnumber tinyauth.auth.temp run function tiny_auth:auth/enter/macro2 with storage tiny_auth:keys auths[{UUID:$(UUID)}]
+execute if score @s tinyauth.auth.state matches 7 if score @s tinyauth.auth.page matches 4..5 if score #testnumber tinyauth.auth.temp matches 0 run data modify storage tiny_auth:temp initEnter.numpadColor set value "red"
+execute if score @s tinyauth.auth.state matches 7 if score @s tinyauth.auth.page matches 4..5 unless score #testnumber tinyauth.auth.temp matches 0 run data modify storage tiny_auth:temp initEnter.numpadColor set value "green"
+
 execute if score @s tinyauth.auth.state matches 7 run return run function tiny_auth:auth/admin/control_gui/init with storage tiny_auth:temp initEnter
 
 execute if score @s tinyauth.auth.state matches 5 run return run function tiny_auth:auth/create_personal_theme/init with entity @s

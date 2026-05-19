@@ -35,8 +35,18 @@ scoreboard players enable @s tinyauth.auth.enter.b
 scoreboard players enable @s tinyauth.auth.enter.n
 scoreboard players enable @s tinyauth.auth.enter.m
 
+scoreboard players enable @s tinyauth.auth.enter.minus
+scoreboard players enable @s tinyauth.auth.enter.dot
+
 scoreboard players enable @s tinyauth.auth.submit
 scoreboard players enable @s tinyauth.auth.clear
+
+scoreboard players enable @s tinyauth.auth.control_panel.action
+
+scoreboard players reset @s tinyauth.auth.control_panel
+scoreboard players reset @s tinyauth.auth.create_personal_theme
+scoreboard players reset @s tinyauth.auth.change_password
+scoreboard players reset @s tinyauth.auth.logout
 
 scoreboard players set @s tinyauth.auth.state 7
 $scoreboard players set @s tinyauth.auth.page $(page)
@@ -45,7 +55,28 @@ $execute if score @s tinyauth.auth.page matches -1 store result score @s tinyaut
 
 $execute store result storage tiny_auth:keys auths[{UUID:$(UUID)}].prevpage int 1 run scoreboard players get @s tinyauth.auth.page
 
+#execute if score @s tinyauth.auth.page matches 2 run function tiny_auth:config/setup/config_info
+
+#control_panel.input_info == {id:"name", type:"int", label:"Name"}
+execute if data storage tiny_auth:temp control_panel.input_info run data modify storage tiny_auth:temp control_panel_input set from storage tiny_auth:temp control_panel.input_info
+execute if data storage tiny_auth:temp control_panel.input_info run data remove storage tiny_auth:temp control_panel.input_info
+execute unless data storage tiny_auth:temp control_panel.input_info run data modify storage tiny_auth:temp control_panel_input set value {id:"",type:"string",label:""}
 $data modify storage tiny_auth:temp control_panel set from storage tiny_auth:keys auths[{UUID:$(UUID)}]
+
+data modify storage tiny_auth:temp control_panel.input_id set from storage tiny_auth:temp control_panel_input.id
+data modify storage tiny_auth:temp control_panel.input_type set from storage tiny_auth:temp control_panel_input.type
+data modify storage tiny_auth:temp control_panel.input_label set from storage tiny_auth:temp control_panel_input.label
+
+data modify storage tiny_auth:temp control_panel.config_info set from storage tiny_auth:storage config_info
+execute store result storage tiny_auth:temp control_panel.config_max int 1 run data get storage tiny_auth:storage config_info
+execute store result score #config_max tinyauth.auth.temp run data get storage tiny_auth:storage config_info
+scoreboard players add #config_max tinyauth.auth.temp 1
+execute store result storage tiny_auth:temp control_panel.config_max_1 int 1 run scoreboard players get #config_max tinyauth.auth.temp
+
+execute unless data storage tiny_auth:temp initEnter.numpadColor run data modify storage tiny_auth:temp control_panel.numpadColor set value "green"
+
+execute if data storage tiny_auth:temp initEnter.numpadColor run data modify storage tiny_auth:temp control_panel.numpadColor set from storage tiny_auth:temp initEnter.numpadColor
+execute if data storage tiny_auth:temp initEnter.numpadColor run data remove storage tiny_auth:temp initEnter.numpadColor
 
 function tiny_auth:auth/admin/control_gui/setup_page with storage tiny_auth:temp control_panel
 

@@ -1,0 +1,51 @@
+scoreboard players reset @s tinyauth.auth.enter.1
+scoreboard players reset @s tinyauth.auth.enter.2
+scoreboard players reset @s tinyauth.auth.enter.3
+scoreboard players reset @s tinyauth.auth.enter.4
+scoreboard players reset @s tinyauth.auth.enter.5
+scoreboard players reset @s tinyauth.auth.enter.6
+scoreboard players reset @s tinyauth.auth.enter.7
+scoreboard players reset @s tinyauth.auth.enter.8
+scoreboard players reset @s tinyauth.auth.enter.9
+scoreboard players reset @s tinyauth.auth.enter.0
+scoreboard players reset @s tinyauth.auth.enter.q
+scoreboard players reset @s tinyauth.auth.enter.w
+scoreboard players reset @s tinyauth.auth.enter.e
+scoreboard players reset @s tinyauth.auth.enter.r
+scoreboard players reset @s tinyauth.auth.enter.t
+scoreboard players reset @s tinyauth.auth.enter.y
+scoreboard players reset @s tinyauth.auth.enter.u
+scoreboard players reset @s tinyauth.auth.enter.i
+scoreboard players reset @s tinyauth.auth.enter.o
+scoreboard players reset @s tinyauth.auth.enter.p
+scoreboard players reset @s tinyauth.auth.enter.a
+scoreboard players reset @s tinyauth.auth.enter.s
+scoreboard players reset @s tinyauth.auth.enter.d
+scoreboard players reset @s tinyauth.auth.enter.f
+scoreboard players reset @s tinyauth.auth.enter.g
+scoreboard players reset @s tinyauth.auth.enter.h
+scoreboard players reset @s tinyauth.auth.enter.j
+scoreboard players reset @s tinyauth.auth.enter.k
+scoreboard players reset @s tinyauth.auth.enter.l
+scoreboard players reset @s tinyauth.auth.enter.z
+scoreboard players reset @s tinyauth.auth.enter.x
+scoreboard players reset @s tinyauth.auth.enter.c
+scoreboard players reset @s tinyauth.auth.enter.v
+scoreboard players reset @s tinyauth.auth.enter.b
+scoreboard players reset @s tinyauth.auth.enter.n
+scoreboard players reset @s tinyauth.auth.enter.m
+
+scoreboard players reset @s tinyauth.auth.enter.minus
+scoreboard players reset @s tinyauth.auth.enter.dot
+
+scoreboard players reset @s tinyauth.auth.submit
+scoreboard players reset @s tinyauth.auth.clear
+
+scoreboard players reset @s tinyauth.auth.control_panel.action
+
+scoreboard players enable @s tinyauth.auth.control_panel
+scoreboard players enable @s tinyauth.auth.create_personal_theme
+scoreboard players enable @s tinyauth.auth.change_password
+scoreboard players enable @s tinyauth.auth.logout
+
+dialog clear @s

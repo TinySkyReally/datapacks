@@ -4,6 +4,8 @@ scoreboard objectives add tinyauth.auth.login_with_otp trigger
 scoreboard objectives add tinyauth.auth.change_theme trigger
 scoreboard objectives add tinyauth.auth.change_language trigger
 
+scoreboard objectives add tinyauth.auth.control_panel.action trigger
+
 scoreboard objectives add tinyauth.auth.theme.title trigger
 scoreboard objectives add tinyauth.auth.theme.input_title trigger
 scoreboard objectives add tinyauth.auth.theme.input trigger
@@ -47,12 +49,17 @@ scoreboard objectives add tinyauth.auth.enter.b trigger
 scoreboard objectives add tinyauth.auth.enter.n trigger
 scoreboard objectives add tinyauth.auth.enter.m trigger
 
+scoreboard objectives add tinyauth.auth.enter.minus trigger
+scoreboard objectives add tinyauth.auth.enter.dot trigger
+
 scoreboard objectives add tinyauth.auth.change_password trigger
 scoreboard objectives add tinyauth.auth.logout trigger
 scoreboard objectives add tinyauth.auth.create_personal_theme trigger
+scoreboard objectives add tinyauth.auth.control_panel trigger
 
 scoreboard objectives add tinyauth.auth.state dummy
 scoreboard objectives add tinyauth.auth.page dummy
+scoreboard objectives add tinyauth.auth.actionpage dummy
 scoreboard objectives add tinyauth.auth.temp dummy
 scoreboard objectives add tinyauth.auth.theme_id dummy
 scoreboard objectives add tinyauth.auth.language_id dummy
@@ -63,7 +70,8 @@ gamerule send_command_feedback false
 
 data modify storage tiny_auth:storage colors set value {BLACK:"black",DARKBLUE:"dark_blue",DARKGREEN:"dark_green",DARKAQUA:"dark_aqua",DARKRED:"dark_red",DARKPURPLE:"dark_purple",GOLD:"gold",GRAY:"gray",DARKGRAY:"dark_gray",BLUE:"blue",GREEN:"green",AQUA:"aqua",RED:"red",LIGHTPURPLE:"light_purple",YELLOW:"yellow",WHITE:"white"}
 data modify storage tiny_auth:storage lowercase_map set value {A:"a",B:"b",C:"c",D:"d",E:"e",F:"f",G:"g",H:"h",I:"i",J:"j",K:"k",L:"l",M:"m",N:"n",O:"o",P:"p",Q:"q",R:"r",S:"s",T:"t",U:"u",V:"v",W:"w",X:"x",Y:"y",Z:"z"}
-data modify storage tiny_auth:storage character_list set value ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
+data modify storage tiny_auth:storage character_map set value {"1":"0", "2":"1", "3":"2", "4":"3", "5":"4", "6":"5", "7":"6", "8":"7", "9":"8", "10":"9", "11":"A", "12":"B", "13":"C", "14":"D", "15":"E", "16":"F", "17":"G", "18":"H", "19":"I", "20":"J", "21":"K", "22":"L", "23":"M", "24":"N", "25":"O", "26":"P", "27":"Q", "28":"R", "29":"S", "30":"T", "31":"U", "32":"V", "33":"W", "34":"X", "35":"Y", "36":"Z", "37":"-", "38":"_", "39":"!", "40":"?", "41":".", "42":"@", "43":"#"}
+data modify storage tiny_auth:storage character_list set value ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","-","_","!","?",".","@", "#"]
 
 data remove storage tiny_auth:visuals themes
 data remove storage tiny_auth:visuals languages
@@ -73,3 +81,5 @@ function tiny_auth:themes
 function tiny_auth:config
 
 function tiny_auth:config/setup with storage tiny_auth:config
+
+function tiny_auth:version

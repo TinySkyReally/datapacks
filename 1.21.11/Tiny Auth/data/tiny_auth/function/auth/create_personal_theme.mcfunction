@@ -1,5 +1,8 @@
 scoreboard players reset @s tinyauth.auth.create_personal_theme
 
+execute if data storage tiny_auth:config {experimental_custom_themes:0b} run scoreboard players enable @s tinyauth.auth.create_personal_theme
+execute if data storage tiny_auth:config {experimental_custom_themes:0b} run return run tellraw @s [{"text":"This experimental feature is currently disabled by server administrators.","color":"red"}]
+
 data modify storage tiny_auth:temp init.UUID set from entity @s UUID
 data modify storage tiny_auth:temp init.message set value ""
 data modify storage tiny_auth:temp init.submit set value ""

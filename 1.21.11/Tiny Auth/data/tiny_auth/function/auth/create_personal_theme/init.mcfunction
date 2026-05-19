@@ -38,6 +38,11 @@ scoreboard players enable @s tinyauth.auth.enter.m
 scoreboard players enable @s tinyauth.auth.submit
 scoreboard players enable @s tinyauth.auth.clear
 
+scoreboard players reset @s tinyauth.auth.control_panel
+scoreboard players reset @s tinyauth.auth.create_personal_theme
+scoreboard players reset @s tinyauth.auth.change_password
+scoreboard players reset @s tinyauth.auth.logout
+
 scoreboard players set @s tinyauth.auth.state 5
 
 $data modify storage tiny_auth:temp show_editor_dialog set from storage tiny_auth:keys auths[{UUID:$(UUID)}]

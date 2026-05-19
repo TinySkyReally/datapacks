@@ -22,5 +22,6 @@ scoreboard players set @s tinyauth.auth.state 0
 scoreboard players enable @s tinyauth.auth.change_password
 scoreboard players enable @s tinyauth.auth.logout
 scoreboard players enable @s tinyauth.auth.create_personal_theme
+scoreboard players enable @s tinyauth.auth.control_panel
 
 playsound minecraft:entity.player.levelup ui @s ~ ~ ~ 100 2

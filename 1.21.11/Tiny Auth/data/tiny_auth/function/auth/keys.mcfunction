@@ -13,6 +13,9 @@ execute if score @s tinyauth.auth.theme.submit matches 1.. run function tiny_aut
 execute if score @s tinyauth.auth.change_password matches 1.. run function tiny_auth:auth/change_password with entity @s
 execute if score @s tinyauth.auth.logout matches 1.. run function tiny_auth:auth/logout with entity @s
 execute if score @s tinyauth.auth.create_personal_theme matches 1.. run function tiny_auth:auth/create_personal_theme with entity @s
+execute if score @s tinyauth.auth.control_panel matches 1.. run function tiny_auth:auth/control_panel with entity @s
+
+execute if score @s tinyauth.auth.control_panel.action matches 1.. run function tiny_auth:auth/admin/control_gui/action with entity @s
 
 execute if score @s tinyauth.auth.enter.0 matches 1.. run function tiny_auth:auth/enter {key:"0",text:"0"}
 execute if score @s tinyauth.auth.enter.1 matches 1.. run function tiny_auth:auth/enter {key:"1",text:"1"}
@@ -51,3 +54,6 @@ execute if score @s tinyauth.auth.enter.w matches 1.. run function tiny_auth:aut
 execute if score @s tinyauth.auth.enter.x matches 1.. run function tiny_auth:auth/enter {key:"x",text:"X"}
 execute if score @s tinyauth.auth.enter.y matches 1.. run function tiny_auth:auth/enter {key:"y",text:"Y"}
 execute if score @s tinyauth.auth.enter.z matches 1.. run function tiny_auth:auth/enter {key:"z",text:"Z"}
+
+execute if score @s tinyauth.auth.enter.minus matches 1.. run function tiny_auth:auth/enter {key:"minus",text:"-"}
+execute if score @s tinyauth.auth.enter.dot matches 1.. run function tiny_auth:auth/enter {key:"dot",text:"."}

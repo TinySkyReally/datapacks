@@ -47,6 +47,11 @@ scoreboard players enable @s tinyauth.auth.theme.input
 scoreboard players enable @s tinyauth.auth.theme.default_key
 scoreboard players enable @s tinyauth.auth.theme.submit
 
+scoreboard players reset @s tinyauth.auth.control_panel
+scoreboard players reset @s tinyauth.auth.create_personal_theme
+scoreboard players reset @s tinyauth.auth.change_password
+scoreboard players reset @s tinyauth.auth.logout
+
 $execute unless dimension tiny_auth:authdim run data remove storage tiny_auth:keys auths[{UUID:$(UUID)}].active_effects
 $execute unless dimension tiny_auth:authdim run data remove storage tiny_auth:keys auths[{UUID:$(UUID)}].attributes
 $execute unless dimension tiny_auth:authdim run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].active_effects set from entity @s active_effects

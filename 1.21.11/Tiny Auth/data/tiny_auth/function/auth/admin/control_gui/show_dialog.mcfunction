@@ -1,1 +1,1 @@
-$dialog show @s {type:"minecraft:multi_action",title:{text:"Tiny Auth - Control Panel"},body:[{type:"minecraft:plain_message",contents:$(contents),width:200}],inputs:[],can_close_with_escape:0b,after_action:"none",pause:0b,columns:1,actions:$(actions)}
+$dialog show @s {type:"minecraft:multi_action",title:{text:"Tiny Auth - Control Panel"},body:[{type:"minecraft:plain_message",contents:$(contents),width:$(contents_width)}],inputs:[],can_close_with_escape:0b,after_action:"none",pause:0b,columns:$(columns),actions:$(actions)}

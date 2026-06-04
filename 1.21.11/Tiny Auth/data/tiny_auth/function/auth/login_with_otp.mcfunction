@@ -1,5 +1,7 @@
 scoreboard players reset @s tinyauth.auth.login_with_otp
 
+execute if score @s tinyauth.auth.gui_opened matches 0 run return run tellraw @s [{text:"You cannot use this command right now!",color:"red"}]
+
 data modify storage tiny_auth:temp init.UUID set from entity @s UUID
 data modify storage tiny_auth:temp init.message set value "enter_otp"
 data modify storage tiny_auth:temp init.submit set value "Submit"

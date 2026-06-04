@@ -1,39 +1,41 @@
-scoreboard players enable @s tinyauth.auth.enter.1
-scoreboard players enable @s tinyauth.auth.enter.2
-scoreboard players enable @s tinyauth.auth.enter.3
-scoreboard players enable @s tinyauth.auth.enter.4
-scoreboard players enable @s tinyauth.auth.enter.5
-scoreboard players enable @s tinyauth.auth.enter.6
-scoreboard players enable @s tinyauth.auth.enter.7
-scoreboard players enable @s tinyauth.auth.enter.8
-scoreboard players enable @s tinyauth.auth.enter.9
-scoreboard players enable @s tinyauth.auth.enter.0
-scoreboard players enable @s tinyauth.auth.enter.q
-scoreboard players enable @s tinyauth.auth.enter.w
-scoreboard players enable @s tinyauth.auth.enter.e
-scoreboard players enable @s tinyauth.auth.enter.r
-scoreboard players enable @s tinyauth.auth.enter.t
-scoreboard players enable @s tinyauth.auth.enter.y
-scoreboard players enable @s tinyauth.auth.enter.u
-scoreboard players enable @s tinyauth.auth.enter.i
-scoreboard players enable @s tinyauth.auth.enter.o
-scoreboard players enable @s tinyauth.auth.enter.p
-scoreboard players enable @s tinyauth.auth.enter.a
-scoreboard players enable @s tinyauth.auth.enter.s
-scoreboard players enable @s tinyauth.auth.enter.d
-scoreboard players enable @s tinyauth.auth.enter.f
-scoreboard players enable @s tinyauth.auth.enter.g
-scoreboard players enable @s tinyauth.auth.enter.h
-scoreboard players enable @s tinyauth.auth.enter.j
-scoreboard players enable @s tinyauth.auth.enter.k
-scoreboard players enable @s tinyauth.auth.enter.l
-scoreboard players enable @s tinyauth.auth.enter.z
-scoreboard players enable @s tinyauth.auth.enter.x
-scoreboard players enable @s tinyauth.auth.enter.c
-scoreboard players enable @s tinyauth.auth.enter.v
-scoreboard players enable @s tinyauth.auth.enter.b
-scoreboard players enable @s tinyauth.auth.enter.n
-scoreboard players enable @s tinyauth.auth.enter.m
+#coreboard players enable @s tinyauth.auth.enter.1
+#coreboard players enable @s tinyauth.auth.enter.2
+#coreboard players enable @s tinyauth.auth.enter.3
+#coreboard players enable @s tinyauth.auth.enter.4
+#coreboard players enable @s tinyauth.auth.enter.5
+#coreboard players enable @s tinyauth.auth.enter.6
+#coreboard players enable @s tinyauth.auth.enter.7
+#coreboard players enable @s tinyauth.auth.enter.8
+#coreboard players enable @s tinyauth.auth.enter.9
+#coreboard players enable @s tinyauth.auth.enter.0
+#coreboard players enable @s tinyauth.auth.enter.q
+#coreboard players enable @s tinyauth.auth.enter.w
+#coreboard players enable @s tinyauth.auth.enter.e
+#coreboard players enable @s tinyauth.auth.enter.r
+#coreboard players enable @s tinyauth.auth.enter.t
+#coreboard players enable @s tinyauth.auth.enter.y
+#coreboard players enable @s tinyauth.auth.enter.u
+#coreboard players enable @s tinyauth.auth.enter.i
+#coreboard players enable @s tinyauth.auth.enter.o
+#coreboard players enable @s tinyauth.auth.enter.p
+#coreboard players enable @s tinyauth.auth.enter.a
+#coreboard players enable @s tinyauth.auth.enter.s
+#coreboard players enable @s tinyauth.auth.enter.d
+#coreboard players enable @s tinyauth.auth.enter.f
+#coreboard players enable @s tinyauth.auth.enter.g
+#coreboard players enable @s tinyauth.auth.enter.h
+#coreboard players enable @s tinyauth.auth.enter.j
+#coreboard players enable @s tinyauth.auth.enter.k
+#coreboard players enable @s tinyauth.auth.enter.l
+#coreboard players enable @s tinyauth.auth.enter.z
+#coreboard players enable @s tinyauth.auth.enter.x
+#coreboard players enable @s tinyauth.auth.enter.c
+#coreboard players enable @s tinyauth.auth.enter.v
+#coreboard players enable @s tinyauth.auth.enter.b
+#coreboard players enable @s tinyauth.auth.enter.n
+#coreboard players enable @s tinyauth.auth.enter.m
+
+scoreboard players enable @s tinyauth.auth.enter
 
 scoreboard players enable @s tinyauth.auth.submit
 scoreboard players enable @s tinyauth.auth.clear
@@ -51,6 +53,8 @@ scoreboard players reset @s tinyauth.auth.control_panel
 scoreboard players reset @s tinyauth.auth.create_personal_theme
 scoreboard players reset @s tinyauth.auth.change_password
 scoreboard players reset @s tinyauth.auth.logout
+
+scoreboard players set @s tinyauth.auth.logged_in 0
 
 $execute unless dimension tiny_auth:authdim run data remove storage tiny_auth:keys auths[{UUID:$(UUID)}].active_effects
 $execute unless dimension tiny_auth:authdim run data remove storage tiny_auth:keys auths[{UUID:$(UUID)}].attributes
@@ -104,6 +108,7 @@ $execute unless data storage tiny_auth:keys auths[{UUID:$(UUID)}].attempts run d
 $execute store result score @s tinyauth.auth.temp run data get storage tiny_auth:keys auths[{UUID:$(UUID)}].attempts
 
 $execute if score @s tinyauth.auth.temp matches ..0 run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].attempts set from storage tiny_auth:config max_attempts
+execute if score @s tinyauth.auth.temp matches ..0 run function tiny_auth:logs/new/with_me {filter:"Lockouts",action:"account_locked",reason:"max_attempts_reached"}
 execute if score @s tinyauth.auth.temp matches ..0 run scoreboard players set @s tinyauth.auth.state 3
 execute if score @s tinyauth.auth.temp matches ..0 store result score #gametime tinyauth.auth.temp run time query gametime
 execute if score @s tinyauth.auth.temp matches ..0 store result score #lockout_duration tinyauth.auth.temp run data get storage tiny_auth:config lockout_duration
@@ -147,3 +152,4 @@ execute if score @s tinyauth.auth.state matches 4 run data modify storage tiny_a
 execute if score @s tinyauth.auth.state matches 4 run data modify storage tiny_auth:temp show_dialog.input set value "PASSWORD"
 
 function tiny_auth:auth/show_dialog with storage tiny_auth:temp show_dialog
+scoreboard players set @s tinyauth.auth.gui_opened 1

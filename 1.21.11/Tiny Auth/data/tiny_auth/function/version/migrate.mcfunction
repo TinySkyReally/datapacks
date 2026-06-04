@@ -1,5 +1,6 @@
-tellraw @a [{"text":"[TinyAuth]: ","color":"#557799"},{"text":"Updating codebase to v1.2.3. Purging legacy performance hogs...","color":"yellow"}]
+function tiny_auth:debug/send_info/with_all {info:{"text":"Updating codebase to v1.2.4. Purging legacy performance hogs...","color":"yellow"}}
 
 # Features
+execute if data storage tiny_auth:datapack {version:"1.2.3"} run function tiny_auth:version/migrate/1/2/3
 
-data modify storage tiny_auth:datapack version set value "1.2.3"
+data modify storage tiny_auth:datapack version set value "1.2.4"

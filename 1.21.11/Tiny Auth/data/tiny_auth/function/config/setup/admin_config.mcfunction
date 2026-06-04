@@ -2,6 +2,9 @@ execute if data storage tiny_auth:config admin.lockout_duration run data modify 
 execute if data storage tiny_auth:config admin.max_attempts run data modify storage tiny_auth:config max_attempts set from storage tiny_auth:config admin.max_attempts
 execute if data storage tiny_auth:config admin.lock_attempts run data modify storage tiny_auth:config lock_attempts set from storage tiny_auth:config admin.lock_attempts
 execute if data storage tiny_auth:config admin.max_password_length run data modify storage tiny_auth:config max_password_length set from storage tiny_auth:config admin.max_password_length
+execute if data storage tiny_auth:config admin.min_password_length run data modify storage tiny_auth:config min_password_length set from storage tiny_auth:config admin.min_password_length
+execute if data storage tiny_auth:config admin.must_contain_number run data modify storage tiny_auth:config must_contain_number set from storage tiny_auth:config admin.must_contain_number
+execute if data storage tiny_auth:config admin.must_contain_letter run data modify storage tiny_auth:config must_contain_letter set from storage tiny_auth:config admin.must_contain_letter
 execute if data storage tiny_auth:config admin.default_dimension run data modify storage tiny_auth:config default_dimension set from storage tiny_auth:config admin.default_dimension
 execute if data storage tiny_auth:config admin.default_x run data modify storage tiny_auth:config default_x set from storage tiny_auth:config admin.default_x
 execute if data storage tiny_auth:config admin.default_y run data modify storage tiny_auth:config default_y set from storage tiny_auth:config admin.default_y
@@ -12,3 +15,4 @@ execute if data storage tiny_auth:config admin.default_gamemode run data modify 
 execute if data storage tiny_auth:config admin.theme run data modify storage tiny_auth:config theme set from storage tiny_auth:config admin.theme
 execute if data storage tiny_auth:config admin.language run data modify storage tiny_auth:config language set from storage tiny_auth:config admin.language
 execute if data storage tiny_auth:config admin.experimental_custom_themes run data modify storage tiny_auth:config experimental_custom_themes set from storage tiny_auth:config admin.experimental_custom_themes
+execute if data storage tiny_auth:config admin.experimental_session_login run data modify storage tiny_auth:config experimental_session_login set from storage tiny_auth:config admin.experimental_session_login

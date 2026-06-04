@@ -1,0 +1,1 @@
+$data modify storage tiny_auth:temp control_panel.log_filter set from storage tiny_auth:storage log_filters[$(log_filter)]

@@ -1,5 +1,7 @@
 scoreboard players reset @s tinyauth.auth.submit
 
+execute if score @s tinyauth.auth.gui_opened matches 0 run return run tellraw @s [{text:"You cannot use this command right now!",color:"red"}]
+
 $data modify storage tiny_auth:temp auth set from storage tiny_auth:keys auths[{UUID:$(UUID)}]
 
 $execute unless data storage tiny_auth:keys auths[{UUID:$(UUID)}].lock_attempts run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].lock_attempts set value 5
@@ -14,7 +16,8 @@ execute if score @s tinyauth.auth.state matches 6 unless function tiny_auth:auth
 execute if score @s tinyauth.auth.state matches 6 if score #OTPTest tinyauth.auth.temp matches 1 run function tiny_auth:auth/reset
 $execute if score @s tinyauth.auth.state matches 6 if score #OTPTest tinyauth.auth.temp matches 1 run data remove storage tiny_auth:keys auths[{UUID:$(UUID)}].lock_attempts
 $execute if score @s tinyauth.auth.state matches 6 if score #OTPTest tinyauth.auth.temp matches 1 run data remove storage tiny_auth:keys auths[{UUID:$(UUID)}].attempts
-execute if score @s tinyauth.auth.state matches 6 if score #OTPTest tinyauth.auth.temp matches 1 run tellraw @s [{"text":"[Tiny Auth]: Sucesfully logged via Recovery Code!","color":"green"}]
+execute if score @s tinyauth.auth.state matches 6 if score #OTPTest tinyauth.auth.temp matches 1 run function tiny_auth:logs/new/with_me {filter:"Resets",action:"recovery_login",reason:"used_otp_code"}
+execute if score @s tinyauth.auth.state matches 6 if score #OTPTest tinyauth.auth.temp matches 1 run function tiny_auth:debug/send_info/with_me {info:{"text":"Successfully logged in via Recovery Code!","color":"green"}}
 execute if score @s tinyauth.auth.state matches 6 if score #OTPTest tinyauth.auth.temp matches 1 run function tiny_auth:auth/generate_otp/new with entity @s
 execute if score @s tinyauth.auth.state matches 6 if score #OTPTest tinyauth.auth.temp matches 1 run return run function tiny_auth:auth/success with storage tiny_auth:temp auth
 execute if score @s tinyauth.auth.state matches 6 if score #OTPTest tinyauth.auth.temp matches 0 run function tiny_auth:auth/reset_input with entity @s
@@ -32,28 +35,61 @@ $execute if score @s tinyauth.auth.state matches 3 store result score @s tinyaut
 execute if score @s tinyauth.auth.state matches 3 store result score #time tinyauth.auth.temp run time query gametime
 $execute if score @s tinyauth.auth.state matches 3 if score @s tinyauth.auth.temp >= #time tinyauth.auth.temp run return run function tiny_auth:auth/init {UUID:$(UUID),message:"blocked",submit:"",state:3}
 
+scoreboard players set #checkContains tinyauth.auth.temp 0
+execute if score @s tinyauth.auth.state matches 2 run scoreboard players set #checkContains tinyauth.auth.temp 1
+execute if data storage tiny_auth:temp {auth:{password:""}} unless data storage tiny_auth:temp {auth:{input:""}} run scoreboard players set #checkContains tinyauth.auth.temp 1
+
 execute store result score #input tinyauth.auth.temp run data get storage tiny_auth:temp auth.input
 execute store result score #max_password_length tinyauth.auth.temp run data get storage tiny_auth:config max_password_length
-$execute if score #input tinyauth.auth.temp > #max_password_length tinyauth.auth.temp run data modify storage tiny_auth:temp maxPasswordLength set value {UUID:$(UUID),message:"length_limit",submit:"",state:1}
-execute if score #input tinyauth.auth.temp > #max_password_length tinyauth.auth.temp store result storage tiny_auth:temp maxPasswordLength.state int 1 run scoreboard players get @s tinyauth.auth.state
-execute if score #input tinyauth.auth.temp > #max_password_length tinyauth.auth.temp run function tiny_auth:auth/init with storage tiny_auth:temp maxPasswordLength
+execute store result score #min_password_length tinyauth.auth.temp run data get storage tiny_auth:config min_password_length
+
+$data modify storage tiny_auth:temp PasswordLength set value {UUID:$(UUID),message:"-1",submit:"",state:1}
+execute store result storage tiny_auth:temp PasswordLength.state int 1 run scoreboard players get @s tinyauth.auth.state
+
+execute if score #checkContains tinyauth.auth.temp matches 1 if score #input tinyauth.auth.temp > #max_password_length tinyauth.auth.temp run data modify storage tiny_auth:temp PasswordLength.message set value "length_limit"
+execute if score #checkContains tinyauth.auth.temp matches 1 if score #input tinyauth.auth.temp > #max_password_length tinyauth.auth.temp run return run function tiny_auth:auth/init with storage tiny_auth:temp PasswordLength
+
+execute if score #checkContains tinyauth.auth.temp matches 1 if score #input tinyauth.auth.temp < #min_password_length tinyauth.auth.temp run data modify storage tiny_auth:temp PasswordLength.message set value "short_password"
+execute if score #checkContains tinyauth.auth.temp matches 1 if score #input tinyauth.auth.temp < #min_password_length tinyauth.auth.temp run return run function tiny_auth:auth/init with storage tiny_auth:temp PasswordLength
+
+$data remove storage tiny_auth:keys auths[{UUID:$(UUID)}].input_contains_number
+$data remove storage tiny_auth:keys auths[{UUID:$(UUID)}].input_contains_letter
+$data remove storage tiny_auth:keys auths[{UUID:$(UUID)}].input_contains_symbol
+
+data modify storage tiny_auth:temp PasswordContainsLoop.remaining set from storage tiny_auth:temp auth.input
+$data modify storage tiny_auth:temp PasswordContainsLoop.UUID set value $(UUID)
+function tiny_auth:auth/check/contains with storage tiny_auth:temp PasswordContainsLoop
+
+$data modify storage tiny_auth:temp auth set from storage tiny_auth:keys auths[{UUID:$(UUID)}]
+
+$data modify storage tiny_auth:temp PasswordContains set value {UUID:$(UUID),message:"-1",submit:"",state:1}
+execute store result storage tiny_auth:temp PasswordContains.state int 1 run scoreboard players get @s tinyauth.auth.state
+
+execute if score #checkContains tinyauth.auth.temp matches 1 if data storage tiny_auth:config {must_contain_number:1b} unless data storage tiny_auth:temp auth.input_contains_number run data modify storage tiny_auth:temp PasswordContains.message set value "doesnt_contain_number"
+execute if score #checkContains tinyauth.auth.temp matches 1 if data storage tiny_auth:config {must_contain_number:1b} unless data storage tiny_auth:temp auth.input_contains_number run return run function tiny_auth:auth/init with storage tiny_auth:temp PasswordContains
+
+execute if score #checkContains tinyauth.auth.temp matches 1 if data storage tiny_auth:config {must_contain_letter:1b} unless data storage tiny_auth:temp auth.input_contains_letter run data modify storage tiny_auth:temp PasswordContains.message set value "doesnt_contain_letter"
+execute if score #checkContains tinyauth.auth.temp matches 1 if data storage tiny_auth:config {must_contain_letter:1b} unless data storage tiny_auth:temp auth.input_contains_letter run return run function tiny_auth:auth/init with storage tiny_auth:temp PasswordContains
 
 execute if score @s tinyauth.auth.state matches 2 run function tiny_auth:auth/reset
-execute if score @s tinyauth.auth.state matches 2 run tellraw @s [{"text":"[Tiny Auth]: Sucesfully changed password!","color":"green"}]
+execute if score @s tinyauth.auth.state matches 2 run function tiny_auth:debug/send_info/with_me {info:{"text":"Successfully changed password!","color":"green"}}
 $execute if score @s tinyauth.auth.state matches 2 run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].password set from storage tiny_auth:temp auth.input
+execute if score @s tinyauth.auth.state matches 2 run function tiny_auth:logs/new/with_me {filter:"Resets",action:"password_changed",reason:"user_updated"}
 execute if score @s tinyauth.auth.state matches 2 run return run function tiny_auth:auth/success with storage tiny_auth:temp auth
 
 execute if data storage tiny_auth:temp {auth:{password:""}} unless data storage tiny_auth:temp {auth:{input:""}} run function tiny_auth:auth/reset
 execute if data storage tiny_auth:temp {auth:{password:""}} unless data storage tiny_auth:temp {auth:{input:""}} run function tiny_auth:auth/success with storage tiny_auth:temp auth
-execute if data storage tiny_auth:temp {auth:{password:""}} unless data storage tiny_auth:temp {auth:{input:""}} run tellraw @s [{"text":"[Tiny Auth]: Sucesfully registered!","color":"green"}]
+execute if data storage tiny_auth:temp {auth:{password:""}} unless data storage tiny_auth:temp {auth:{input:""}} run function tiny_auth:debug/send_info/with_me {info:{"text":"Successfully registered!","color":"green"}}
 execute if data storage tiny_auth:temp {auth:{password:""}} unless data storage tiny_auth:temp {auth:{input:""}} run function tiny_auth:auth/generate_otp/new with entity @s
+execute if data storage tiny_auth:temp {auth:{password:""}} unless data storage tiny_auth:temp {auth:{input:""}} run function tiny_auth:logs/new/with_me {filter:"All",action:"account_registered",reason:"first_time_setup"}
 $execute if data storage tiny_auth:temp {auth:{password:""}} unless data storage tiny_auth:temp {auth:{input:""}} run return run data modify storage tiny_auth:keys auths[{UUID:$(UUID)}].password set from storage tiny_auth:keys auths[{UUID:$(UUID)}].input
 
 execute unless data storage tiny_auth:temp {auth:{password:""}} unless function tiny_auth:auth/check/test run function tiny_auth:auth/reset
 execute unless data storage tiny_auth:temp {auth:{password:""}} unless function tiny_auth:auth/check/test run function tiny_auth:auth/success with storage tiny_auth:temp auth
 $execute unless data storage tiny_auth:temp {auth:{password:""}} unless function tiny_auth:auth/check/test run data remove storage tiny_auth:keys auths[{UUID:$(UUID)}].lock_attempts
 $execute unless data storage tiny_auth:temp {auth:{password:""}} unless function tiny_auth:auth/check/test run data remove storage tiny_auth:keys auths[{UUID:$(UUID)}].attempts
-execute unless data storage tiny_auth:temp {auth:{password:""}} unless function tiny_auth:auth/check/test run return run tellraw @s [{"text":"[Tiny Auth]: Sucesfully logged in!","color":"green"}]
+execute unless data storage tiny_auth:temp {auth:{password:""}} unless function tiny_auth:auth/check/test run function tiny_auth:logs/new/with_me {filter:"All",action:"login_success",reason:"password_correct"}
+execute unless data storage tiny_auth:temp {auth:{password:""}} unless function tiny_auth:auth/check/test run return run function tiny_auth:debug/send_info/with_me {info:{"text":"Successfully logged in!","color":"green"}}
 
 playsound minecraft:block.note_block.iron_xylophone ui @s ~ ~ ~ 100 .1
 

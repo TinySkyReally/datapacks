@@ -1,5 +1,7 @@
 scoreboard players reset @s tinyauth.auth.clear
 
+execute if score @s tinyauth.auth.gui_opened matches 0 run return run tellraw @s [{text:"You cannot use this command right now!",color:"red"}]
+
 function tiny_auth:auth/reset_input with entity @s
 
 $data modify storage tiny_auth:temp initClear set value {UUID:$(UUID),message:"cleared",submit:-1,state:1}

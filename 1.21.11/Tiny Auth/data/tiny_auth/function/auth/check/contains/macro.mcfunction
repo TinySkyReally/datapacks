@@ -1,0 +1,1 @@
+$execute if data storage tiny_auth:storage character_types."$(loopitem)" run data modify storage tiny_auth:temp PasswordContainsLoop.chartype set from storage tiny_auth:storage character_types."$(loopitem)"

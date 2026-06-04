@@ -1,0 +1,1 @@
+$data modify storage tiny_auth:temp control_panel.contents set value $(logs_to_display)

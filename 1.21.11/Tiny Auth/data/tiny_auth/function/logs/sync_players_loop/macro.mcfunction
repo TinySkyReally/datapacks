@@ -1,0 +1,1 @@
+$execute unless data storage tiny_auth:storage unique_players[{name:"$(player)"}] run data modify storage tiny_auth:storage unique_players append value {name:"$(player)"}

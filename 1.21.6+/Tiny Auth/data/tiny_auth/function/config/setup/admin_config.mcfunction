@@ -5,6 +5,7 @@ execute if data storage tiny_auth:config admin.max_password_length run data modi
 execute if data storage tiny_auth:config admin.min_password_length run data modify storage tiny_auth:config min_password_length set from storage tiny_auth:config admin.min_password_length
 execute if data storage tiny_auth:config admin.must_contain_number run data modify storage tiny_auth:config must_contain_number set from storage tiny_auth:config admin.must_contain_number
 execute if data storage tiny_auth:config admin.must_contain_letter run data modify storage tiny_auth:config must_contain_letter set from storage tiny_auth:config admin.must_contain_letter
+execute if data storage tiny_auth:config admin.block_common_password run data modify storage tiny_auth:config block_common_password set from storage tiny_auth:config admin.block_common_password
 execute if data storage tiny_auth:config admin.default_dimension run data modify storage tiny_auth:config default_dimension set from storage tiny_auth:config admin.default_dimension
 execute if data storage tiny_auth:config admin.default_x run data modify storage tiny_auth:config default_x set from storage tiny_auth:config admin.default_x
 execute if data storage tiny_auth:config admin.default_y run data modify storage tiny_auth:config default_y set from storage tiny_auth:config admin.default_y

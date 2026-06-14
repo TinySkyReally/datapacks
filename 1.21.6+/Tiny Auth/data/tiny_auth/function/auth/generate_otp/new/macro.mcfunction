@@ -1,2 +1,2 @@
-$tellraw @s [{"text":"[!] ","color":"gold"},{"text":"Your Recovery Code: ","color":"gray"},{"text":"$(code)","color":"#FF5555","bold":true,"click_event":{"action":"copy_to_clipboard","value":"$(code)"},"hover_event":{"action":"show_text","value":"Click to copy!"}}]
+$tellraw @s [{"text":"[!] ","color":"gold"},{"text":"Your Recovery Code: ","color":"gray"},{"text":"$(code_raw)","color":"#FF5555","bold":true,"click_event":{"action":"copy_to_clipboard","value":"$(code_raw)"},"hover_event":{"action":"show_text","value":"Click to copy!"}}]
 tellraw @s {"text":"[!] Save this code! It is the only way to recover your account if you forget your password.","color":"red","italic":true}

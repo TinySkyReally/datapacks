@@ -48,3 +48,5 @@ scoreboard players reset @s tinyauth.auth.theme.input_title
 scoreboard players reset @s tinyauth.auth.theme.input
 scoreboard players reset @s tinyauth.auth.theme.default_key
 scoreboard players reset @s tinyauth.auth.theme.submit
+
+function tiny_auth:auth/reset_input with entity @s

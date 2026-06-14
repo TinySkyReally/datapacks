@@ -5,10 +5,7 @@ $execute if data storage tiny_auth:temp {plrData:{UUID:$(UUID)}} in tiny_auth:au
 $execute if data storage tiny_auth:temp {plrData:{UUID:$(UUID)}} in tiny_auth:authdim run loot replace block 1000 0 0 container.0 loot {type:"minecraft:chest",pools:[{rolls:1,entries:[{type:"minecraft:item",name:"minecraft:player_head",functions:[{function:"minecraft:fill_player_head",entity:"this"}]}]}],functions:[]}
 $execute if data storage tiny_auth:temp {plrData:{UUID:$(UUID)}} in tiny_auth:authdim run data modify storage tiny_auth:storage auths[{UUID:$(UUID)}].Name set from block 1000 0 0 Items[{Slot:0b}].components."minecraft:profile".name
 
-scoreboard players set @s tinyauth.detection.leave_game 0
-scoreboard players set @s tinyauth.auth.gui_opened 0
-
-function tiny_auth:auth/reset_input with entity @s
+return 0
 
 #Session Check
 execute store result score #current_tick tinyauth.auth.temp run time query gametime

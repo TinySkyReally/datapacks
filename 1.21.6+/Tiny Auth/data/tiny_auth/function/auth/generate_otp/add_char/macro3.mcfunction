@@ -1,0 +1,1 @@
+$data modify storage tiny_auth:temp OTP.code set value "$(code)$(text_hash)"

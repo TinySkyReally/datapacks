@@ -1,1 +1,1 @@
-$data modify storage tiny_auth:temp OTP.code set value "$(code)$(char)"
+$data modify storage tiny_auth:temp OTP.code_raw set value "$(code_raw)$(char)"

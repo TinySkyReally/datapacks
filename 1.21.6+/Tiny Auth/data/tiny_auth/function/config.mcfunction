@@ -6,6 +6,7 @@ data modify storage tiny_auth:storage config_info set value [\
   {label:"Min Password Length", type:"int", id:"min_password_length", admin_input: "numpad"},\
   {label:"Must Contain Number", type:"byte", id:"must_contain_number", admin_input: "toggle"},\
   {label:"Must Contain Letter", type:"byte", id:"must_contain_letter", admin_input: "toggle"},\
+  {label:"Block Weak Password", type:"byte", id:"block_common_password", admin_input: "toggle"},\
   {label:"Default Dimension", type:"string", id:"default_dimension", admin_input: "list", list: ["minecraft:overworld","minecraft:the_nether","minecraft:the_end"]},\
   {label:"Default X", type:"double", id:"default_x", admin_input: "floatnumpad"},\
   {label:"Default Y", type:"double", id:"default_y", admin_input: "floatnumpad"},\
@@ -27,6 +28,7 @@ data merge storage tiny_auth:config {\
   min_password_length: 8,\
   must_contain_number: 0b,\
   must_contain_letter: 0b,\
+  block_common_password: 0b, \
   default_dimension: "minecraft:overworld",\
   default_x: 0.0d,\
   default_y: 0.0d,\

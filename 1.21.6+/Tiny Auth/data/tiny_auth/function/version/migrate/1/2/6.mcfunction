@@ -1,0 +1,1 @@
+data remove storage tiny_auth:storage auths[].otp

@@ -1,3 +1,5 @@
+scoreboard players reset @s tinyauth.detection.leave_game
+
 $execute unless data storage tiny_auth:storage auths[{UUID:$(UUID)}] run data modify storage tiny_auth:storage auths append value {UUID:$(UUID),password:"",input:""}
 $execute if data storage tiny_auth:storage auths[{UUID:$(UUID)}] run data modify storage tiny_auth:storage plrData set from storage tiny_auth:storage auths[{UUID:$(UUID)}]
 
@@ -5,7 +7,7 @@ $execute if data storage tiny_auth:temp {plrData:{UUID:$(UUID)}} in tiny_auth:au
 $execute if data storage tiny_auth:temp {plrData:{UUID:$(UUID)}} in tiny_auth:authdim run loot replace block 1000 0 0 container.0 loot {type:"minecraft:chest",pools:[{rolls:1,entries:[{type:"minecraft:item",name:"minecraft:player_head",functions:[{function:"minecraft:fill_player_head",entity:"this"}]}]}],functions:[]}
 $execute if data storage tiny_auth:temp {plrData:{UUID:$(UUID)}} in tiny_auth:authdim run data modify storage tiny_auth:storage auths[{UUID:$(UUID)}].Name set from block 1000 0 0 Items[{Slot:0b}].components."minecraft:profile".name
 
-return 0
+#return 0
 
 #Session Check
 execute store result score #current_tick tinyauth.auth.temp run time query gametime

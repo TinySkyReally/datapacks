@@ -2,4 +2,4 @@ function tiny_auth:debug/send_info/with_all {info:{"text":"Fresh installation de
 
 #Features
 
-data modify storage tiny_auth:datapack version set value "1.2.7"
+data modify storage tiny_auth:datapack version set value [1,2,8]

@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "datacommand",
+  "version": "1.0.0",
+  "name": "Data Command",
+  "description": "Dynamically turn JSON files into macro commands.",
+  "authors": [],
+  "contact": {},
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.tiny.datacommand.DataCommandMod"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.16.10",
+    "minecraft": "1.21.11",
+    "fabric-api": "*"
+  }
+}
